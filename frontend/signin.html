@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    <style>
+        #signin1 input{
+            height: 25px;
+            width: 300px;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body style="background-color: rgb(0, 201, 221);;">
+    
+    <div id="container" style="margin: 5% 20% 0% 20%; display: flex;">
+        <div id="signin1" style="background-color: white; width: 50%; padding-left: 15px; border-radius: 5px;">
+         <h1>Sign in</h1>
+         <h3>Don't have an account <a href="signup.html">Sign up</a></h3>
+         <h4>Email</h4>
+         <input type="text" placeholder="Enter your email" id="email"><i class="fa-solid fa-envelope" style="padding-left: 10px;"></i>
+         <h4>Password</h4>
+         <input type="password" placeholder="Enter your password" id="pass"><i class="fa-solid fa-lock" style="padding-left: 10px;"></i>
+         <button onclick="login()" style="display: block; margin-top: 10px;height: 40px; width: 70px; border-radius: 5px; background-color: greenyellow;">Signin</button>
+         <p>Forgot Password <a href="">Click here</a></p>
+        </div>
+
+    </div>
+    
+    
+</body>
+<script>
+    function login(){
+        const payload = {
+            email:document.getElementById("email").value,
+            password:document.getElementById("pass").value
+        }
+           
+        fetch("http://localhost:8000/users/login",{
+        method:"POST",
+        headers:{
+            "Content-type":"application/json"
+        },
+         body:JSON.stringify(payload)
+    }).then(res=>res.json())
+    .then(res=>{
+        localStorage.setItem("token",res.token)
+        localStorage.setItem("name",res.userName)
+       alert(res.msg)
+       if (res.msg == "Login successful"){
+         window.location.href= "../index.html";
+       }})
+    .catch(err=>console.log(err))
+    }
+</script>
+</html>
